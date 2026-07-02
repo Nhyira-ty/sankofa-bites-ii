@@ -4,7 +4,6 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
     <title>Sankofa Bites - Random Food Picker</title>
-    
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -20,47 +19,92 @@
                         "outline-variant": "#dfbfb8",
                         "secondary": "#3f6653",
                         "on-surface-variant": "#58413c",
-                        "surface": "#fff8f5",
-                        "primary-fixed": "#ffdbd2",
+                        "surface": "#fff8f5", "primary-fixed": "#ffdbd2",
                         "primary-container": "#c04828",
                         "background": "#fff8f5",
                         "on-surface": "#1e1b18",
-                        "primary": "#9f3012",
-                        "secondary-container": "#beead1",
+                        "primary": "#9f3012", "secondary-container": "#beead1",
                         "surface-container-low": "#fbf2ed",
                         "surface-container-high": "#efe6e2",
                         "surface-container": "#f5ece7",
+                        "mystery-dark": "#2d2d2d"
                     },
                     "fontFamily": {
                         "body-md": ["Be Vietnam Pro"],
                         "body-lg": ["Be Vietnam Pro"],
                         "headline-md": ["Plus Jakarta Sans"],
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                        "headline-lg": ["Plus Jakarta Sans"]
                     }
                 },
             },
         }
     </script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col relative">
     
-    <div class="kente-pattern fixed inset-0 -z-10"></div>
+    <style>
+        body {
+            overscroll-behavior-y: contain;
+            background-image: radial-gradient(circle at 2px 2px, rgba(169, 55, 25, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        
+        /* Traditional West African inspired background pattern layout */
+        .kente-pattern {
+            background-color: transparent;
+            opacity: 0.05;
+            background-image: linear-gradient(135deg, #9f3012 25%, transparent 25%), linear-gradient(225deg, #9f3012 25%, transparent 25%), linear-gradient(45deg, #9f3012 25%, transparent 25%), linear-gradient(315deg, #9f3012 25%, #fff8f5 25%);
+            background-position: 10px 0, 10px 0, 0 0, 0 0;
+            background-size: 20px 20px;
+            background-repeat: repeat;
+        }
 
+        .press-effect:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Shuffle dynamic highlight keyframe animation structure hook */
+        .highlight-shuffle {
+            animation: highlightFlash 0.15s ease-in-out;
+            background-color: #ffdbd2 !important;
+        }
+
+        @keyframes highlightFlash {
+            0% { background-color: transparent; }
+            50% { background-color: #ffdbd2; }
+            100% { background-color: transparent; }
+        }
+
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Floating mini target red/amber outer ambient glow setup style */
+        .gift-glow {
+            box-shadow: 0 10px 25px rgba(159, 48, 18, 0.35);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
+    <div class="kente-pattern fixed inset-0 -z-10"></div>
+    
     <header class="bg-surface/80 backdrop-blur-md flex items-center justify-between px-6 h-16 w-full sticky top-0 z-50 border-b border-outline-variant/20">
         <div class="flex items-center gap-3">
-            <h1 class="font-headline-md text-2xl font-extrabold text-primary">🍛 Sankofa Bites</h1>
+            <h1 class="font-headline-md text-2xl font-extrabold text-primary">Sankofa Bites</h1>
         </div>
-        <p class="text-xs text-on-surface-variant hidden sm:block">Build your custom list & let fate choose.</p>
+        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-xl border-2 border-primary-fixed shadow-sm">
+            Brief
+        </div>
     </header>
 
-    <main class="flex-1 flex flex-col p-6 gap-6 pb-40 max-w-md mx-auto w-full">
-        
+    <main class="flex-1 flex flex-col p-6 gap-6 pb-48 max-w-md mx-auto w-full">
         <section class="flex flex-col gap-3">
-            <h2 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">What foods are you choosing between?</h2>
+            <h2 class="font-semibold text-xs text-on-surface-variant uppercase tracking-wider">What foods are you choosing between?</h2>
             <form class="flex gap-2" id="addFoodForm">
-                <input class="flex-1 bg-surface-container-low border-2 border-outline-variant/30 focus:border-primary focus:ring-0 rounded-2xl px-4 py-3 font-body-lg text-on-surface outline-none transition-all placeholder:text-on-surface-variant/50" id="foodInput" placeholder="Type a dish (e.g. Banku, Pizza)..." type="text" required/>
+                <input class="flex-1 bg-surface-container-low border-2 border-outline-variant/30 focus:border-primary focus:ring-0 rounded-2xl px-4 py-3 font-body-lg text-on-surface outline-none transition-all placeholder:text-on-surface-variant/50" id="foodInput" placeholder="Type and add a dish..." required="" type="text"/>
                 <button class="bg-primary text-white p-4 rounded-2xl shadow-lg press-effect flex items-center justify-center aspect-square" type="submit">
                     <span class="material-symbols-outlined">add</span>
                 </button>
@@ -69,84 +113,83 @@
 
         <section class="flex flex-col gap-3 flex-1 overflow-hidden">
             <div class="flex items-center justify-between">
-                <h2 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Your Custom List</h2>
+                <h2 class="font-semibold text-xs text-on-surface-variant uppercase tracking-wider">Your Custom Menu</h2>
                 <span class="text-xs text-on-surface-variant bg-surface-container-high px-2 py-1 rounded-full" id="itemCount">0 items</span>
             </div>
-            
-            <div id="emptyPrompt" class="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-outline-variant/40 rounded-3xl my-auto text-on-surface-variant/60">
-                <span class="material-symbols-outlined text-4xl mb-2 text-primary/40">restaurant_menu</span>
-                <p class="font-medium">Your pool is empty.</p>
-                <p class="text-xs max-w-[200px] mt-1">Add items above to start designing your options rotation wheel!</p>
-            </div>
-
-            <div class="flex flex-col gap-3 overflow-y-auto scroll-hide pb-4 max-h-[50vh] hidden" id="foodList">
-                </div>
+            <div class="flex flex-col gap-3 overflow-y-auto scroll-hide pb-4 min-h-[150px]" id="foodList"></div>
         </section>
     </main>
 
     <div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-surface via-surface/95 to-transparent pt-8 z-40 flex justify-center">
-        <button class="w-full max-w-md py-5 bg-primary text-white font-bold text-lg rounded-3xl shadow-[0_12px_32px_rgba(169,55,25,0.4)] hover:bg-primary-container transition-all press-effect flex items-center justify-center gap-3 opacity-50 cursor-not-allowed" id="pickBtn" disabled>
-            <span class="material-symbols-outlined text-3xl">casino</span>
-            PICK FOR ME
-        </button>
+        <div class="w-full max-w-md flex items-center gap-4 relative">
+            
+            <button class="flex-1 py-5 bg-primary text-white font-bold rounded-3xl shadow-[0_12px_32px_rgba(169,55,25,0.4)] hover:bg-primary-container transition-all press-effect flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed" id="pickBtn" disabled>
+                <span class="material-symbols-outlined text-3xl">casino</span>
+                PICK FOR ME
+            </button>
+
+            <div class="transition-all duration-300 hover:scale-110 flex-shrink-0" id="miniMysteryTrigger">
+                <button class="w-14 h-14 bg-primary rounded-2xl flex flex-col items-center justify-center text-2xl shadow-xl border border-primary-fixed/40 gift-glow group relative cursor-pointer animate-bounce" type="button">
+                    <span>🎁</span>
+                    <span class="absolute -bottom-5 right-0 bg-primary text-white font-bold text-[8px] tracking-tight px-1.5 py-0.5 rounded-md border border-primary-fixed/30 whitespace-nowrap shadow-md uppercase">Recipe</span>
+                </button>
+            </div>
+
+        </div>
     </div>
 
-    <div class="fixed inset-0 z-[120] flex items-center justify-center p-4" id="recipeModal">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="recipeOverlay"></div>
-        <div class="bg-white w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative z-10 flex flex-col max-h-[85vh]">
-            <header class="p-6 border-b border-gray-100 flex justify-between items-center bg-primary text-white">
+    <div class="fixed inset-0 z-[130] hidden flex flex-col justify-end p-4 md:items-center md:justify-center" id="recipeModal">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="recipeOverlay"></div>
+        
+        <div class="bg-surface w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 flex flex-col max-h-[80vh] border border-outline-variant/30 transform transition-transform duration-300 translate-y-0">
+            
+            <header class="p-6 bg-surface text-on-surface flex justify-between items-center border-b border-outline-variant/20">
                 <div>
-                    <h3 class="font-bold text-xl">🇬🇭 Authentic Ghana Jollof</h3>
-                    <p class="text-xs opacity-90">The legendary, smoky West African classic</p>
+                    <h3 class="font-headline-md font-bold text-xl tracking-tight text-primary">Recipe for Ghana Jollof Rice</h3>
+                    <p class="text-xs text-on-surface-variant font-medium mt-0.5">Traditional, smoky West African masterpiece</p>
                 </div>
-                <button class="text-white hover:opacity-70" id="closeRecipe">
-                    <span class="material-symbols-outlined text-2xl">close</span>
+                <button class="w-8 h-8 rounded-full bg-on-surface/5 text-on-surface hover:bg-on-surface/10 transition-colors flex items-center justify-center" id="closeRecipe" type="button">
+                    <span class="material-symbols-outlined text-xl font-bold">close</span>
                 </button>
             </header>
-            <div class="p-6 overflow-y-auto space-y-4 text-sm text-gray-700">
-                <div>
-                    <h4 class="font-bold text-primary uppercase text-xs tracking-wider mb-1">Ingredients</h4>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Long grain perfumed Jasmine rice (3 cups)</li>
-                        <li>Tomato paste (4 tbsp) & blended fresh tomatoes</li>
-                        <li>Onions, garlic, ginger, and scotch bonnet peppers (blended)</li>
-                        <li>Chicken/Beef stock + Curry powder, Thyme, and Bay leaves</li>
-                    </ul>
+
+            <div class="p-6 overflow-y-auto space-y-5 text-sm text-on-surface scroll-hide">
+                <div class="flex justify-center py-5 bg-surface-container rounded-2xl border border-outline-variant/10 shadow-inner">
+                    <span class="text-6xl animate-pulse">🍲</span>
                 </div>
-                <hr class="border-gray-100" />
+
                 <div>
-                    <h4 class="font-bold text-primary uppercase text-xs tracking-wider mb-1">The Strategy</h4>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>The Stew:</strong> Fry sliced onions, add tomato paste, and stir constantly till deep red. Add blended tomato/pepper base and cook down until oil separates.</li>
-                        <li><strong>The Base:</strong> Pour in your savory seasoned stock and aromatic spices. Bring to a roaring boil.</li>
-                        <li><strong>The Rice:</strong> Wash rice thoroughly until water runs perfectly clear. Stir it evenly into the stew base.</li>
-                        <li><strong>The Steam:</strong> Cover tightly with foil/foil wrap and a lid. Turn heat to ultra-low. Let it steam in its own moisture for 25-30 mins until grains are tender and perfectly smoky.</li>
+                    <h4 class="font-bold text-on-surface text-xs uppercase tracking-wider mb-2">Required Ingredients:</h4>
+                    <p class="text-xs leading-relaxed text-on-surface-variant bg-surface-container-low p-4 rounded-xl border border-outline-variant/15">
+                        Long grain perfumed Jasmine rice (3 cups), Tomato paste (4 tbsp), Fresh onions, Garlic cloves, Fresh ginger root, Fresh blended tomatoes, Rich stock (chicken or beef), Curry aromatic spice powder, Dry thyme, Dried bay leaves, Spicy scotch bonnet pepper, Vegetable cooking oil, Fine salt.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-on-surface text-xs uppercase tracking-wider mb-2">Step-by-Step Strategy:</h4>
+                    <ol class="space-y-3 text-xs text-on-surface-variant leading-relaxed">
+                        <li class="flex gap-2.5">
+                            <span class="font-bold text-primary">1.</span> 
+                            <span>Fry sliced onions in hot vegetable oil, add tomato paste and cook down until dark red.</span>
+                        </li>
+                        <li class="flex gap-2.5">
+                            <span class="font-bold text-primary">2.</span> 
+                            <span>Pour in your blended fresh tomatoes, ginger, garlic, and hot pepper mix; fry until oil floats clean to the top surface layer.</span>
+                        </li>
+                        <li class="flex gap-2.5">
+                            <span class="font-bold text-primary">3.</span> 
+                            <span>Stir seasoned meat stock and dry aromatics into the base stew to create your flavor footprint.</span>
+                        </li>
+                        <li class="flex gap-2.5">
+                            <span class="font-bold text-primary">4.</span> 
+                            <span>Wash your jasmine rice thoroughly, stir flat into the stew mix, wrap securely with foil to lock steam, and cook over a minimal low heat burner for 25-30 minutes until smoky and soft.</span>
+                        </li>
                     </ol>
                 </div>
             </div>
-            <footer class="p-4 bg-gray-50 text-center border-t border-gray-100">
-                <button class="w-full py-3 bg-secondary text-white rounded-xl text-sm font-semibold press-effect" id="recipeDone">Let's Customize My Menu!</button>
+
+            <footer class="p-4 bg-surface-container-high text-center border-t border-outline-variant/20">
+                <button class="w-full py-4 bg-secondary text-white rounded-2xl text-sm font-semibold press-effect shadow-md hover:bg-secondary/90" id="recipeDone" type="button">Let's Get Cooking</button>
             </footer>
         </div>
     </div>
-
-    <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6" id="winnerModal">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="modalOverlay"></div>
-        <div class="bg-surface w-full max-w-sm rounded-[40px] overflow-hidden shadow-2xl relative z-10 scale-90 opacity-0 transition-all duration-300" id="modalContent">
-            <div class="p-6 pt-8 flex justify-end">
-                <button class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center transition-all hover:bg-outline-variant/30" id="closeModal">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="p-8 pt-0 flex flex-col items-center gap-2 text-center">
-                <span class="text-xs font-bold text-secondary bg-secondary-container px-4 py-1 rounded-full">YOUR CHOICE WINNER</span>
-                <h2 class="text-3xl font-black text-primary my-4" id="winnerName">Dish Name</h2>
-                <p class="text-sm text-on-surface-variant mb-6">Fate has chosen your meal!</p>
-                <button class="w-full py-4 bg-primary text-white font-bold rounded-2xl press-effect shadow-md" id="modalAction">LET'S EAT!</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
