@@ -1,92 +1,43 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+body {
+    overscroll-behavior-y: contain;
+    background-image: radial-gradient(circle at 2px 2px, rgba(169, 55, 25, 0.05) 1px, transparent 0);
+    background-size: 24px 24px;
 }
 
-body{
-    font-family:Poppins,sans-serif;
-    background:linear-gradient(135deg,#ffecd2,#fcb69f);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.kente-pattern {
+    background-color: transparent;
+    opacity: 0.04;
+    background-image: 
+        linear-gradient(135deg, #9f3012 25%, transparent 25%), 
+        linear-gradient(225deg, #9f3012 25%, transparent 25%), 
+        linear-gradient(45deg, #9f3012 25%, transparent 25%), 
+        linear-gradient(315deg, #9f3012 25%, #fff8f5 25%);
+    background-position: 10px 0, 10px 0, 0 0, 0 0;
+    background-size: 20px 20px;
+    background-repeat: repeat;
 }
 
-.container{
-    width:90%;
-    max-width:400px;
-    text-align:center;
+.press-effect:active {
+    transform: scale(0.96);
+    transition: transform 0.1s ease-out;
 }
 
-h1{
-    color:#8b2500;
-    margin-bottom:10px;
+.highlight-shuffle {
+    animation: highlightFlash 0.15s ease-in-out;
+    background-color: #ffdbd2 !important;
+    border-color: #9f3012 !important;
 }
 
-.subtitle{
-    color:#555;
-    margin-bottom:30px;
+@keyframes highlightFlash {
+    0% { background-color: transparent; }
+    50% { background-color: #ffdbd2; }
+    100% { background-color: transparent; }
 }
 
-.food-card{
-    background:white;
-    padding:30px;
-    border-radius:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    margin-bottom:25px;
-    transition:0.3s;
+.scroll-hide::-webkit-scrollbar {
+    display: none;
 }
-
-.food-card:hover{
-    transform:translateY(-5px);
-}
-
-.category{
-    display:inline-block;
-    background:#ffe4c4;
-    color:#8b2500;
-    padding:8px 15px;
-    border-radius:20px;
-    font-size:12px;
-    margin-bottom:15px;
-}
-
-#foodName{
-    font-size:30px;
-    margin-bottom:10px;
-    color:#222;
-}
-
-#foodDesc{
-    color:#666;
-}
-
-#pickBtn{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:15px;
-    background:#8b2500;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-#pickBtn:hover{
-    background:#a52f00;
-}
-
-.spin{
-    animation:pop .3s ease;
-}
-
-@keyframes pop{
-    0%{
-        transform:scale(.8);
-    }
-    100%{
-        transform:scale(1);
-    }
+.scroll-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
