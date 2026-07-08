@@ -1,3 +1,40 @@
+/* Custom Variable Map Mapping Configuration Design Palette */
+:root {
+    --surface: #fff8f5;
+    --primary: #9f3012;
+    --primary-fixed: #ffdbd2;
+    --secondary: #3f6653;
+    --on-surface: #1e1b18;
+    --on-surface-variant: #58413c;
+    --surface-container: #f5ece7;
+    --surface-container-low: #fbf2ed;
+    --surface-container-high: #efe6e2;
+    --outline-variant: #dfbfb8;
+}
+
+/* Custom Element Style Bindings */
+.bg-surface { background-color: var(--surface); }
+.bg-surface-container { background-color: var(--surface-container); }
+.bg-surface-container-low { background-color: var(--surface-container-low); }
+.bg-surface-container-high { background-color: var(--surface-container-high); }
+.bg-primary { background-color: var(--primary); }
+.bg-primary-fixed\/40 { background-color: rgba(255, 219, 210, 0.4); }
+.bg-primary-fixed\/50 { background-color: rgba(255, 219, 210, 0.5); }
+.bg-secondary { background-color: var(--secondary); }
+
+.text-primary { color: var(--primary); }
+.text-on-surface { color: var(--on-surface); }
+.text-on-surface-variant { color: var(--on-surface-variant); }
+.text-on-surface-variant\/40 { color: rgba(88, 65, 60, 0.4); }
+.text-on-surface-variant\/50 { color: rgba(88, 65, 60, 0.5); }
+.text-secondary { color: var(--secondary); }
+
+.border-outline-variant\/10 { border-color: rgba(223, 191, 184, 0.1); }
+.border-outline-variant\/15 { border-color: rgba(223, 191, 184, 0.15); }
+.border-outline-variant\/20 { border-color: rgba(223, 191, 184, 0.2); }
+.border-outline-variant\/30 { border-color: rgba(223, 191, 184, 0.3); }
+.border-primary-fixed\/40 { border-color: rgba(255, 219, 210, 0.4); }
+
 body {
     overscroll-behavior-y: contain;
     background-image: radial-gradient(circle at 2px 2px, rgba(169, 55, 25, 0.05) 1px, transparent 0);
@@ -6,32 +43,17 @@ body {
 
 .kente-pattern {
     background-color: transparent;
-    opacity: 0.04;
-    background-image: 
-        linear-gradient(135deg, #9f3012 25%, transparent 25%), 
-        linear-gradient(225deg, #9f3012 25%, transparent 25%), 
-        linear-gradient(45deg, #9f3012 25%, transparent 25%), 
-        linear-gradient(315deg, #9f3012 25%, #fff8f5 25%);
+    opacity: 0.05;
+    background-image: linear-gradient(135deg, var(--primary) 25%, transparent 25%), 
+                      linear-gradient(225deg, var(--primary) 25%, transparent 25%), 
+                      linear-gradient(45deg, var(--primary) 25%, transparent 25%), 
+                      linear-gradient(315deg, var(--primary) 25%, var(--surface) 25%);
     background-position: 10px 0, 10px 0, 0 0, 0 0;
     background-size: 20px 20px;
-    background-repeat: repeat;
 }
 
 .press-effect:active {
     transform: scale(0.96);
-    transition: transform 0.1s ease-out;
-}
-
-.highlight-shuffle {
-    animation: highlightFlash 0.15s ease-in-out;
-    background-color: #ffdbd2 !important;
-    border-color: #9f3012 !important;
-}
-
-@keyframes highlightFlash {
-    0% { background-color: transparent; }
-    50% { background-color: #ffdbd2; }
-    100% { background-color: transparent; }
 }
 
 .scroll-hide::-webkit-scrollbar {

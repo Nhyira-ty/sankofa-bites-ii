@@ -1,159 +1,111 @@
-// Dynamic user local database list begins clean
-let foods = JSON.parse(localStorage.getItem('sankofa_custom_foods')) || [];
+// Reactive local storage array cache
+let menuItems = JSON.parse(localStorage.getItem('sankofa_menu_cache')) || [];
 
-// UI element targets
+// Explicit Layout Node Selections
 const foodList = document.getElementById('foodList');
-const emptyPrompt = document.getElementById('emptyPrompt');
 const foodInput = document.getElementById('foodInput');
 const addFoodForm = document.getElementById('addFoodForm');
 const itemCount = document.getElementById('itemCount');
 const pickBtn = document.getElementById('pickBtn');
 
-const winnerModal = document.getElementById('winnerModal');
-const modalContent = document.getElementById('modalContent');
+const miniMysteryTrigger = document.getElementById('miniMysteryTrigger');
 const recipeModal = document.getElementById('recipeModal');
+const closeRecipeBtn = document.getElementById('closeRecipeBtn');
+const recipeDoneBtn = document.getElementById('recipeDoneBtn');
+const recipeOverlay = document.getElementById('recipeOverlay');
 
-// Render user options list onto matrix
-function renderList() {
-    if (foods.length === 0) {
-        foodList.classList.add('hidden');
-        emptyPrompt.classList.remove('hidden');
-        pickBtn.disabled = true;
-        pickBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    } else {
-        emptyPrompt.classList.add('hidden');
-        foodList.classList.remove('hidden');
-        pickBtn.disabled = false;
-        pickBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-    }
+const winnerModal = document.getElementById('winnerModal');
+const winnerName = document.getElementById('winnerName');
+const closeWinnerBtn = document.getElementById('closeWinnerBtn');
+const winnerOverlay = document.getElementById('winnerOverlay');
 
+// Dynamic View Sync Renderer 
+function updateUI() {
     foodList.innerHTML = '';
-    foods.forEach((food, index) => {
-        const item = document.createElement('div');
-        item.className = 'flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-outline-variant/10 transition-all';
-        item.setAttribute('data-index', index);
-        item.innerHTML = `
-            <div class="w-10 h-10 rounded-xl bg-primary-fixed/40 flex items-center justify-center text-xl">🍛</div>
-            <div class="flex-1 min-w-0">
-                <span class="block font-semibold text-on-surface text-base truncate">${food.name}</span>
-                <span class="block text-xs text-on-surface-variant/70 uppercase font-bold tracking-tight">Custom Dish</span>
-            </div>
-            <button onclick="deleteFood(${food.id})" class="text-on-surface-variant/40 hover:text-primary transition-colors p-1">
-                <span class="material-symbols-outlined text-xl">delete</span>
-            </button>
-        `;
-        foodList.appendChild(item);
-    });
     
-    itemCount.innerText = `${foods.length} items`;
-    localStorage.setItem('sankofa_custom_foods', JSON.stringify(foods));
+    if (menuItems.length === 0) {
+        pickBtn.disabled = true;
+        foodList.innerHTML = `
+            <div class="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-outline-variant/40 rounded-3xl text-on-surface-variant/50 my-auto py-12">
+                <span class="material-symbols-outlined text-4xl mb-1 opacity-60">restaurant_menu</span>
+                <p class="font-semibold text-sm">Your custom list is empty</p>
+                <p class="text-[11px]">Type and append dishes above to start tracking selection fates!</p>
+            </div>`;
+    } else {
+        pickBtn.disabled = false;
+        menuItems.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-outline-variant/10 w-full';
+            row.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-primary-fixed/40 flex items-center justify-center text-lg flex-shrink-0">🍲</div>
+                <span class="flex-1 font-semibold text-on-surface truncate">${item}</span>
+                <button class="text-on-surface-variant/40 hover:text-red-600 transition-colors p-1" type="button" data-index="${index}">
+                    <span class="material-symbols-outlined text-xl">delete</span>
+                </button>`;
+            
+            // Attach a secure click listener to the unique row item's delete key
+            row.querySelector('button').addEventListener('click', function() {
+                removeItem(index);
+            });
+            
+            foodList.appendChild(row);
+        });
+    }
+    itemCount.innerText = `${menuItems.length} items`;
+    localStorage.setItem('sankofa_menu_cache', JSON.stringify(menuItems));
 }
 
-// Clear individual list elements
-window.deleteFood = function(id) {
-    foods = foods.filter(f => f.id !== id);
-    renderList();
-};
+// Mutation Handlers
+function removeItem(index) {
+    menuItems.splice(index, 1);
+    updateUI();
+}
 
-// Handle text input item submission
 addFoodForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = foodInput.value.trim();
-    if (name) {
-        const newFood = {
-            id: Date.now() + Math.random(),
-            name: name
-        };
-        foods.unshift(newFood);
+    const val = foodInput.value.trim();
+    if (val) {
+        menuItems.unshift(val);
         foodInput.value = '';
-        renderList();
-        foodList.scrollTo({ top: 0, behavior: 'smooth' });
+        updateUI();
     }
 });
 
-// Shuffling Roulette Logic Engine
+// Carousel Randomizer Algorithm
 pickBtn.addEventListener('click', () => {
-    if (foods.length === 0) return;
-    
+    if (menuItems.length === 0) return;
     pickBtn.disabled = true;
-    pickBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-3xl">refresh</span> CHOOSING...';
-
-    let iterations = 12;
-    let currentIdx = -1;
     
-    const shuffle = setInterval(() => {
-        if (currentIdx >= 0) {
-            const prevItem = foodList.querySelector(`[data-index="${currentIdx}"]`);
-            if (prevItem) prevItem.classList.remove('highlight-shuffle');
+    let counter = 10;
+    const timer = setInterval(() => {
+        const nodes = foodList.children;
+        if (nodes.length > 0) {
+            for (let n of nodes) n.classList.remove('bg-primary-fixed/60');
+            const rand = Math.floor(Math.random() * menuItems.length);
+            if(nodes[rand] && nodes[rand].classList) {
+                nodes[rand].classList.add('bg-primary-fixed/60');
+            }
         }
-        
-        currentIdx = Math.floor(Math.random() * foods.length);
-        
-        const nextItem = foodList.querySelector(`[data-index="${currentIdx}"]`);
-        if (nextItem) nextItem.classList.add('highlight-shuffle');
-        
-        iterations--;
-        if (iterations <= 0) {
-            clearInterval(shuffle);
-            
-            const winner = foods[currentIdx];
-            showWinner(winner);
-            
+        counter--;
+        if (counter <= 0) {
+            clearInterval(timer);
+            const finalIndex = Math.floor(Math.random() * menuItems.length);
+            winnerName.innerText = menuItems[finalIndex];
+            winnerModal.classList.remove('hidden');
             pickBtn.disabled = false;
-            pickBtn.innerHTML = '<span class="material-symbols-outlined text-3xl">casino</span> PICK FOR ME';
         }
-    }, 150);
+    }, 120);
 });
 
-// Display Selected Choice Winner Card Modals
-function showWinner(food) {
-    document.getElementById('winnerName').innerText = food.name;
-    const actionBtn = document.getElementById('modalAction');
-    
-    // Fallback checks if they spin a custom entry called Jollof Rice again
-    if (food.name.toLowerCase().includes('jollof')) {
-        actionBtn.innerText = "VIEW RECIPE AGAIN 🇬🇭";
-        actionBtn.onclick = () => {
-            closeModal();
-            setTimeout(openRecipe, 350);
-        };
-    } else {
-        actionBtn.innerText = "LET'S EAT!";
-        actionBtn.onclick = closeModal;
-    }
+// Explicit Unbroken Trigger Bindings for recipe modals
+miniMysteryTrigger.addEventListener('click', () => { recipeModal.classList.remove('hidden'); });
+closeRecipeBtn.addEventListener('click', () => { recipeModal.classList.add('hidden'); });
+recipeDoneBtn.addEventListener('click', () => { recipeModal.classList.add('hidden'); });
+recipeOverlay.addEventListener('click', () => { recipeModal.classList.add('hidden'); });
 
-    winnerModal.classList.remove('hidden');
-    setTimeout(() => {
-        modalContent.classList.remove('scale-90', 'opacity-0');
-        modalContent.classList.add('scale-100', 'opacity-100');
-    }, 10);
-}
+// Explicit Trigger Bindings for winner target dialog modals
+closeWinnerBtn.addEventListener('click', () => { winnerModal.classList.add('hidden'); updateUI(); });
+winnerOverlay.addEventListener('click', () => { winnerModal.classList.add('hidden'); updateUI(); });
 
-function closeModal() {
-    modalContent.classList.remove('scale-100', 'opacity-100');
-    modalContent.classList.add('scale-90', 'opacity-0');
-    setTimeout(() => {
-        winnerModal.classList.add('hidden');
-    }, 300);
-}
-
-function openRecipe() {
-    recipeModal.classList.remove('hidden');
-}
-
-function closeRecipeModal() {
-    recipeModal.classList.add('hidden');
-}
-
-// Modal closing assignments
-document.getElementById('closeModal').onclick = closeModal;
-document.getElementById('modalOverlay').onclick = closeModal;
-document.getElementById('closeRecipe').onclick = closeRecipeModal;
-document.getElementById('recipeOverlay').onclick = closeRecipeModal;
-document.getElementById('recipeDone').onclick = closeRecipeModal;
-
-// Initialize app data configuration models
-renderList();
-
-// FORCE OPEN RECIPE MODAL ON PAGE LOAD
-openRecipe();
+// Initial setup boot pass
+updateUI();
